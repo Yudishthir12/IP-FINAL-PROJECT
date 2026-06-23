@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduConnect — Learn Together, Grow Together</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #00C853;
+      --green-dark: #00962e;
+      --green-pale: #e8fdf0;
+      --navy: #0D1B2A;
+      --navy-mid: #1a2e42;
+      --slate: #3d5166;
+      --muted: #8fa3b5;
+      --white: #ffffff;
+      --offwhite: #f5f9f6;
+      --card: #ffffff;
+      --border: #ddeee5;
+      --red: #FF4D4D;
+      --amber: #FFB300;
+      --shadow: 0 4px 24px rgba(0,0,0,0.07);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--offwhite);
+      color: var(--navy);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
+
+    /* ── NAV ─────────────────────────── */
+    nav {
+      background: var(--navy);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    }
+
+    .nav-brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--white);
+      cursor: pointer;
+    }
+    .nav-brand span { color: var(--green); }
+
+    .nav-links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .nav-btn:hover, .nav-btn.active { color: var(--white); background: rgba(255,255,255,0.1); }
+    .nav-btn.cta { background: var(--green); color: var(--navy); font-weight: 700; }
+    .nav-btn.cta:hover { background: var(--green-dark); color: var(--white); }
+
+    /* ── VIEWS ────────────────────────── */
+    .view { display: none; animation: fadeIn .3s ease; }
+    .view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── HERO ─────────────────────────── */
+    .hero {
+      background: var(--navy);
+      padding: 80px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,200,83,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(0,200,83,0.15);
+      color: var(--green);
+      border: 1px solid rgba(0,200,83,0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 20px;
+      max-width: 700px;
+      margin-inline: auto;
+    }
+    .hero h1 span { color: var(--green); }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin-inline: auto;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 32px 24px;
+      background: var(--navy-mid);
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--green); }
+    .stat-label { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+    .how-section {
+      padding: 64px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .how-section h2 { font-size: 2rem; margin-bottom: 48px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+    .step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .step-icon {
+      width: 56px; height: 56px;
+      background: var(--green-pale);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 16px;
+    }
+    .step h3 { font-size: 1rem; margin-bottom: 8px; }
+    .step p { color: var(--slate); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── BUTTONS ──────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--green); color: var(--navy); }
+    .btn-primary:hover { background: var(--green-dark); color: var(--white); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,200,83,0.3); }
+    .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--navy); }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+    .btn-ghost { background: rgba(255,255,255,0.1); color: var(--white); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.2); }
+    .btn-danger { background: var(--red); color: white; }
+    .btn-sm { padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+    /* ── PAGE WRAPPER ────────────────── */
+    .page-wrap { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+    .page-header { margin-bottom: 32px; }
+    .page-header h2 { font-size: 1.8rem; }
+    .page-header p { color: var(--slate); margin-top: 6px; }
+
+    /* ── CARDS ────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card + .card { margin-top: 16px; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+    /* ── FORMS ────────────────────────── */
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--navy);
+      background: var(--white);
+      transition: border-color .2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--green); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    /* ── ALERTS ───────────────────────── */
+    .alert {
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .alert-success { background: var(--green-pale); color: var(--green-dark); border: 1px solid #b2f0cb; }
+    .alert-error { background: #fff0f0; color: #c0392b; border: 1px solid #f5c6cb; }
+    .alert-info { background: #e8f4fd; color: #1a5276; border: 1px solid #b8dff5; }
+    .hidden { display: none !important; }
+
+    /* ── BADGE / TAG ──────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-green { background: var(--green-pale); color: var(--green-dark); }
+    .badge-amber { background: #fff8e1; color: #e65100; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
+    .badge-red { background: #fff0f0; color: #c0392b; }
+    .badge-gray { background: #f0f0f0; color: #666; }
+
+    /* ── REQUEST CARDS ───────────────── */
+    .request-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+      transition: all .2s;
+    }
+    .request-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+    .request-card + .request-card { margin-top: 16px; }
+    .request-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
+    .request-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .request-desc { color: var(--slate); font-size: 0.9rem; line-height: 1.6; margin-bottom: 14px; }
+    .request-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .request-by { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── RESOURCE CARD ───────────────── */
+    .resource-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      transition: all .2s;
+    }
+    .resource-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .resource-icon { font-size: 2rem; margin-bottom: 12px; }
+    .resource-title { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 6px; }
+    .resource-desc { color: var(--slate); font-size: 0.88rem; line-height: 1.5; margin-bottom: 14px; }
+    .resource-footer { display: flex; justify-content: space-between; align-items: center; }
+    .resource-downloads { color: var(--muted); font-size: 0.82rem; }
+
+    /* ── TUTOR CARD ──────────────────── */
+    .tutor-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .tutor-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 0 auto 14px;
+    }
+    .tutor-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .tutor-rating { color: var(--amber); font-size: 0.95rem; margin-bottom: 10px; }
+    .tutor-subjects { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 14px; }
+    .tutor-bio { color: var(--slate); font-size: 0.85rem; line-height: 1.5; margin-bottom: 14px; }
+    .tutor-stats { display: flex; justify-content: center; gap: 20px; color: var(--muted); font-size: 0.82rem; }
+
+    /* ── AI CHAT ──────────────────────── */
+    .chat-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .chat-header {
+      background: var(--navy);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-header-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+    .chat-header h3 { color: var(--white); font-size: 1rem; }
+    .chat-header span { color: var(--muted); font-size: 0.8rem; }
+    .chat-messages {
+      padding: 24px;
+      min-height: 300px;
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .chat-bubble {
+      max-width: 75%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .chat-bubble.user {
+      background: var(--navy);
+      color: var(--white);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-bubble.ai {
+      background: var(--green-pale);
+      color: var(--navy);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      border: 1px solid #b2f0cb;
+    }
+    .chat-bubble .subject-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--green-dark);
+      margin-bottom: 6px;
+    }
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      background: var(--offwhite);
+    }
+    .chat-input-row input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .chat-input-row input:focus { border-color: var(--green); }
+    .typing-indicator { display: flex; gap: 4px; align-items: center; padding: 12px 16px; }
+    .typing-indicator span {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: bounce 1.2s infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: .2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+
+    /* ── DASHBOARD ───────────────────── */
+    .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .dash-stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .dash-stat-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--green); }
+    .dash-stat-label { color: var(--slate); font-size: 0.85rem; margin-top: 4px; }
+
+    /* ── MODAL ────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(13,27,42,0.7);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: fadeIn .25s ease;
+    }
+    .modal h3 { font-size: 1.4rem; margin-bottom: 24px; }
+    .modal-close {
+      position: absolute;
+      right: 24px; top: 24px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    /* ── FILTER BAR ──────────────────── */
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+    .filter-bar select, .filter-bar input {
+      padding: 10px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      background: var(--white);
+    }
+    .filter-bar select:focus, .filter-bar input:focus { border-color: var(--green); }
+
+    /* ── SPINNER ─────────────────────── */
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 32px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-wrap { text-align: center; padding: 40px; color: var(--muted); }
+
+    /* ── RESPONSE BLOCK ──────────────── */
+    .response-block {
+      background: var(--offwhite);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-top: 12px;
+    }
+    .response-block .tutor-name-sm { font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+    .response-block p { color: var(--slate); font-size: 0.9rem; line-height: 1.6; }
+    .star-rating { display: flex; gap: 4px; margin-top: 10px; }
+    .star { font-size: 1.3rem; cursor: pointer; color: var(--border); transition: color .15s; }
+    .star.active, .star:hover { color: var(--amber); }
+
+    /* ── AUTH PAGES ──────────────────── */
+    .auth-wrap {
+      max-width: 480px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+    .auth-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-card h2 { font-size: 1.8rem; margin-bottom: 8px; }
+    .auth-card p { color: var(--slate); margin-bottom: 28px; }
+    .auth-switch { text-align: center; margin-top: 20px; color: var(--slate); font-size: 0.9rem; }
+    .auth-switch a { color: var(--green); font-weight: 600; cursor: pointer; text-decoration: none; }
+
+    /* ── TABS ─────────────────────────── */
+    .tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--border); border-radius: 10px; padding: 4px; width: fit-content; }
+    .tab-btn {
+      background: none; border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--slate);
+      transition: all .2s;
+    }
+    .tab-btn.active { background: var(--white); color: var(--navy); font-weight: 700; box-shadow: var(--shadow); }
+
+    /* ── RESPONSIVE ───────────────────── */
+    @media (max-width: 600px) {
+      nav { padding: 0 14px; }
+      .nav-btn { padding: 6px 10px; font-size: 0.8rem; }
+      .hero { padding: 52px 16px; }
+      .page-wrap { padding: 24px 16px; }
+      .auth-card { padding: 28px 20px; }
+      .modal { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ─────────────────────────── -->
+<nav>
+  <div class="nav-brand" onclick="showView('home')">Edu<span>Connect</span></div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-btn" onclick="showView('requests')">📋 Requests</button>
+    <button class="nav-btn" onclick="showView('resources')">📚 Resources</button>
+    <button class="nav-btn" onclick="showView('tutors')">👨‍🏫 Tutors</button>
+    <button class="nav-btn" onclick="showView('assistant')">🤖 AI Help</button>
+    <span id="navAuth">
+      <button class="nav-btn" onclick="showView('login')">Login</button>
+      <button class="nav-btn cta" onclick="showView('register')">Sign Up</button>
+    </span>
+    <span id="navUser" class="hidden">
+      <button class="nav-btn" onclick="showView('dashboard')">⚡ Dashboard</button>
+      <button class="nav-btn" onclick="logout()">Logout</button>
+    </span>
+  </div>
+</nav>
+
+<!-- ── ALERTS (global) ──────────────────── -->
+<div id="globalAlert" class="hidden" style="position:fixed;bottom:20px;right:20px;max-width:360px;z-index:999;"></div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: HOME
+══════════════════════════════════════════ -->
+<div id="view-home" class="view active">
+  <div class="hero">
+    <div class="hero-tag">🇿🇦 Built for SA Pupils</div>
+    <h1>Learn Together,<br/><span>Grow Together</span></h1>
+    <p>Free peer tutoring and study resources for Grade 8 to 12 pupils across South Africa. Post a question. Get real help.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="showView('register')">Get Started Free</button>
+      <button class="btn btn-ghost" onclick="showView('resources')">Browse Resources</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" id="statUsers">200+</div><div class="stat-label">Students Helped</div></div>
+    <div class="stat"><div class="stat-num" id="statTutors">50+</div><div class="stat-label">Volunteer Tutors</div></div>
+    <div class="stat"><div class="stat-num" id="statResources">300+</div><div class="stat-label">Study Resources</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">Always & Forever</div></div>
+  </div>
+
+  <div class="how-section">
+    <h2>How EduConnect Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">✍️</div>
+        <h3>Post Your Question</h3>
+        <p>Tell us what subject and grade you're in, and describe what you're struggling with.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🤝</div>
+        <h3>Get Matched to a Tutor</h3>
+        <p>A peer tutor in your subject will respond with a clear, step-by-step explanation.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🎓</div>
+        <h3>Study Smarter</h3>
+        <p>Download past papers, notes, and study guides. Or ask our AI assistant instantly.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: REGISTER
+══════════════════════════════════════════ -->
+<div id="view-register" class="view">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2>Create Account</h2>
+      <p>Join thousands of SA pupils and tutors.</p>
+      <div id="registerAlert"></div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="Your full name" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="your@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="At least 6 characters" />
+      </div>
+      <div class="form-group">
+        <label>I am a...</label>
+        <select id="reg-role" onchange="toggleRoleFields()">
+          <option value="pupil">Pupil (I need help)</option>
+          <option value="tutor">Tutor (I can help others)</option>
+        </select>
+      </div>
+      <div id="pupilFields">
+        <div class="form-group">
+          <label>My Grade</label>
+          <select id="reg-grade">
+            <option value="Grade 8">Grade 8</option>
+            <option value="Grade 9">Grade 9</option>
+            <option value="Grade 10">Grade 10</option>
+            <option value="Grade 11" selected>Grade 11</option>
+            <option value="Grade 12">Grade 12</option>
+          </select>
+        </div>
+      </div>
+      <div id="tutorFields" class="hidden">
+        <div class="form-group">
+          <label>Subjects I Can Tutor</label>
+          <select id="reg-subjects" multiple style="height:120px;">
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physical Sciences">Physical Sciences</option>
+            <option value="Life Sciences">Life Sciences</option>
+            <option value="English">English</option>
+            <option value="Geography">Geography</option>
+            <option value="History">History</option>
+            <option value="Accounting">Accounting</option>
+            <option value="Computer Applications Technology">CAT</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Short Bio</label>
+          <textarea id="reg-bio" placeholder="Tell pupils a bit about yourself..."></textarea>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="register()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="showView('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: LOGIN
+══════════════════════════════════════════ -->
+<div id="view-login" class="view">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h2>Welcome Back</h2>
+      <p>Sign in to your EduConnect account.</p>
+      <div id="loginAlert"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="your@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Your password" />
+      </div>
+      <div class="alert alert-info" style="margin-bottom:16px;font-size:0.82rem;">
+        💡 Demo: <strong>lerato@student.co.za</strong> or <strong>thabo@educonnect.co.za</strong> / password123
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="login()">Sign In</button>
+      <div class="auth-switch">New here? <a onclick="showView('register')">Create a free account</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: DASHBOARD
+══════════════════════════════════════════ -->
+<div id="view-dashboard" class="view">
+  <div class="page-wrap">
+    <div class="page-header">
+      <h2 id="dashGreeting">Welcome back!</h2>
+      <p id="dashSubtitle">Here's your activity summary.</p>
+    </div>
+    <div class="dash-grid" id="dashStats"></div>
+    <h3 style="margin-bottom:16px;font-size:1.1rem;">Recent Activity</h3>
+    <div id="dashRecent"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: REQUESTS
+══════════════════════════════════════════ -->
+<div id="view-requests" class="view">
+  <div class="page-wrap">
+    <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>Study Requests</h2>
+        <p>Pupils asking for help — tutors, pick one and respond!</p>
+      </div>
+      <button class="btn btn-primary" id="postRequestBtn" onclick="showPostRequestModal()" style="display:none">✏️ Post a Request</button>
+    </div>
+
+    <div class="filter-bar">
+      <select id="filterSubject" onchange="loadRequests()">
+        <option value="">All Subjects</option>
+        <option>Mathematics</option>
+        <option>Physical Sciences</option>
+        <option>Life Sciences</option>
+        <option>English</option>
+        <option>Geography</option>
+        <option>History</option>
+        <option>Accounting</option>
+        <option>Computer Applications Technology</option>
+      </select>
+      <select id="filterGrade" onchange="loadRequests()">
+        <option value="">All Grades</option>
+        <option>Grade 8</option>
+        <option>Grade 9</option>
+        <option>Grade 10</option>
+        <option>Grade 11</option>
+        <option>Grade 12</option>
+      </select>
+    </div>
+
+    <div id="requestsList"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: RESOURCES
+══════════════════════════════════════════ -->
+<div id="view-resources" class="view">
+  <div class="page-wrap">
+    <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>📚 Resource Library</h2>
+        <p>Notes, past papers, and study guides — all free.</p>
+      </div>
+      <button class="btn btn-primary" id="uploadResourceBtn" onclick="showUploadModal()" style="display:none">⬆️ Upload Resource</button>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" id="searchResource" placeholder="Search resources..." oninput="filterResources()" />
+      <select id="filterResSubject" onchange="loadResources()">
+        <option value="">All Subjects</option>
+        <option>Mathematics</option>
+        <option>Physical Sciences</option>
+        <option>Life Sciences</option>
+        <option>English</option>
+        <option>Geography</option>
+        <option>History</option>
+        <option>Accounting</option>
+        <option>Computer Applications Technology</option>
+      </select>
+      <select id="filterResGrade" onchange="loadResources()">
+        <option value="">All Grades</option>
+        <option>Grade 8</option><option>Grade 9</option>
+        <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+      </select>
+    </div>
+
+    <div id="resourcesGrid" class="card-grid"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: TUTORS
+══════════════════════════════════════════ -->
+<div id="view-tutors" class="view">
+  <div class="page-wrap">
+    <div class="page-header">
+      <h2>👨‍🏫 Our Tutors</h2>
+      <p>Peer tutors who volunteer their time to help you succeed.</p>
+    </div>
+    <div class="filter-bar">
+      <select id="filterTutorSubject" onchange="loadTutors()">
+        <option value="">All Subjects</option>
+        <option>Mathematics</option>
+        <option>Physical Sciences</option>
+        <option>Life Sciences</option>
+        <option>English</option>
+        <option>Geography</option>
+        <option>History</option>
+        <option>Accounting</option>
+        <option>Computer Applications Technology</option>
+      </select>
+    </div>
+    <div id="tutorsGrid" class="card-grid"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VIEW: AI ASSISTANT
+══════════════════════════════════════════ -->
+<div id="view-assistant" class="view">
+  <div class="page-wrap" style="max-width:720px;">
+    <div class="page-header">
+      <h2>🤖 AI Study Assistant</h2>
+      <p>Ask any school question — Maths, Science, English and more. Instant answers, 24/7.</p>
+    </div>
+
+    <div class="chat-box">
+      <div class="chat-header">
+        <div class="chat-header-dot"></div>
+        <div>
+          <h3>EduConnect AI</h3>
+          <span>Powered by NLP — specialised in SA school curriculum</span>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-bubble ai">
+          <div class="subject-tag">👋 EduConnect AI</div>
+          Hi! I'm your AI study assistant. Ask me anything about your school subjects — Maths, Science, English, Life Sciences, and more. I'm here to help!
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="e.g. How do I solve a quadratic equation?" onkeypress="if(event.key==='Enter') sendAIQuestion()" />
+        <button class="btn btn-primary" onclick="sendAIQuestion()">Ask ➜</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h4 style="margin-bottom:12px;">💡 Try asking...</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="askSuggestion('What is the quadratic formula?')">Quadratic formula</button>
+        <button class="btn btn-outline btn-sm" onclick="askSuggestion('Explain Newton laws of motion')">Newton's Laws</button>
+        <button class="btn btn-outline btn-sm" onclick="askSuggestion('What is the difference between mitosis and meiosis?')">Mitosis vs Meiosis</button>
+        <button class="btn btn-outline btn-sm" onclick="askSuggestion('How to write a good essay structure?')">Essay structure</button>
+        <button class="btn btn-outline btn-sm" onclick="askSuggestion('Explain DNA and how it works')">What is DNA?</button>
+        <button class="btn btn-outline btn-sm" onclick="askSuggestion('How does factorize work in maths?')">Factorize</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════ -->
+
+<!-- Post Request Modal -->
+<div id="postRequestModal" class="modal-overlay hidden">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal('postRequestModal')">✕</button>
+    <h3>📝 Post a Study Request</h3>
+    <div id="postRequestAlert"></div>
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" id="req-title" placeholder="e.g. Help with quadratic equations" />
+    </div>
+    <div class="form-group">
+      <label>Subject</label>
+      <select id="req-subject">
+        <option value="">Select subject...</option>
+        <option>Mathematics</option>
+        <option>Physical Sciences</option>
+        <option>Life Sciences</option>
+        <option>English</option>
+        <option>Geography</option>
+        <option>History</option>
+        <option>Accounting</option>
+        <option>Computer Applications Technology</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Grade</label>
+      <select id="req-grade">
+        <option>Grade 8</option><option>Grade 9</option>
+        <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="req-desc" placeholder="Explain what you're struggling with in detail..."></textarea>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="submitRequest()">Post Request</button>
+  </div>
+</div>
+
+<!-- View Request Modal -->
+<div id="viewRequestModal" class="modal-overlay hidden">
+  <div class="modal" style="position:relative;max-width:600px;">
+    <button class="modal-close" onclick="closeModal('viewRequestModal')">✕</button>
+    <div id="viewRequestContent"></div>
+  </div>
+</div>
+
+<!-- Upload Resource Modal -->
+<div id="uploadResourceModal" class="modal-overlay hidden">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeModal('uploadResourceModal')">✕</button>
+    <h3>⬆️ Upload a Resource</h3>
+    <div id="uploadAlert"></div>
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" id="res-title" placeholder="e.g. Grade 12 Maths Summary Notes" />
+    </div>
+    <div class="form-group">
+      <label>Subject</label>
+      <select id="res-subject">
+        <option value="">Select subject...</option>
+        <option>Mathematics</option>
+        <option>Physical Sciences</option>
+        <option>Life Sciences</option>
+        <option>English</option>
+        <option>Geography</option>
+        <option>History</option>
+        <option>Accounting</option>
+        <option>Computer Applications Technology</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Grade</label>
+      <select id="res-grade">
+        <option>Grade 8</option><option>Grade 9</option>
+        <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <select id="res-type">
+        <option>Notes</option>
+        <option>Past Paper</option>
+        <option>Study Guide</option>
+        <option>Exercise</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="res-desc" placeholder="What does this resource cover?"></textarea>
+    </div>
+    <div class="form-group">
+      <label>File (PDF, Word, or Image — optional)</label>
+      <input type="file" id="res-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="submitResource()">Upload Resource</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+  // ── State ────────────────────────────────
+  const API = '';  // same origin
+  let currentUser = null;
+  let token = localStorage.getItem('ec_token');
+  let allResources = [];
+
+  // ── Init ──────────────────────────────────
+  window.onload = async () => {
+    if (token) await fetchCurrentUser();
+    updateNav();
+  };
+
+  async function fetchCurrentUser() {
+    try {
+      const res = await apiFetch('/api/auth/me');
+      if (res.success) {
+        currentUser = res.user;
+      } else {
+        token = null;
+        localStorage.removeItem('ec_token');
+        localStorage.removeItem('ec_user');
+      }
+    } catch {
+      token = null;
+    }
+  }
+
+  // ── API Helper ───────────────────────────
+  async function apiFetch(url, options = {}) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (options.body instanceof FormData) delete headers['Content-Type'];
+
+    const res = await fetch(API + url, { ...options, headers: options.formData ? { 'Authorization': `Bearer ${token}` } : headers });
+    return res.json();
+  }
+
+  async function apiFormData(url, formData) {
+    const headers = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(API + url, { method: 'POST', headers, body: formData });
+    return res.json();
+  }
+
+  // ── Navigation ───────────────────────────
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const el = document.getElementById(`view-${name}`);
+    if (el) el.classList.add('active');
+    window.scrollTo(0, 0);
+
+    // Load data when switching views
+    if (name === 'requests') loadRequests();
+    if (name === 'resources') loadResources();
+    if (name === 'tutors') loadTutors();
+    if (name === 'dashboard') loadDashboard();
+  }
+
+  function updateNav() {
+    if (currentUser) {
+      document.getElementById('navAuth').classList.add('hidden');
+      document.getElementById('navUser').classList.remove('hidden');
+      document.getElementById('postRequestBtn').style.display = currentUser.role === 'pupil' ? '' : 'none';
+      document.getElementById('uploadResourceBtn').style.display = '';
+    } else {
+      document.getElementById('navAuth').classList.remove('hidden');
+      document.getElementById('navUser').classList.add('hidden');
+      document.getElementById('postRequestBtn').style.display = 'none';
+      document.getElementById('uploadResourceBtn').style.display = 'none';
+    }
+  }
+
+  // ── Auth ──────────────────────────────────
+  function toggleRoleFields() {
+    const role = document.getElementById('reg-role').value;
+    document.getElementById('pupilFields').classList.toggle('hidden', role !== 'pupil');
+    document.getElementById('tutorFields').classList.toggle('hidden', role !== 'tutor');
+  }
+
+  async function register() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const role = document.getElementById('reg-role').value;
+    const grade = role === 'pupil' ? document.getElementById('reg-grade').value : 'N/A';
+    const subjectEls = document.getElementById('reg-subjects');
+    const subjects = role === 'tutor' ? Array.from(subjectEls.selectedOptions).map(o => o.value) : [];
+    const bio = role === 'tutor' ? document.getElementById('reg-bio').value : '';
+
+    if (!name || !email || !password) return showAlert('registerAlert', 'All fields are required.', 'error');
+    if (password.length < 6) return showAlert('registerAlert', 'Password must be at least 6 characters.', 'error');
+
+    try {
+      const data = await apiFetch('/api/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, password, role, grade, subjects, bio })
+      });
+      if (data.success) {
+        token = data.token;
+        currentUser = data.user;
+        localStorage.setItem('ec_token', token);
+        updateNav();
+        showToast('Account created! Welcome to EduConnect 🎉');
+        showView('dashboard');
+      } else {
+        showAlert('registerAlert', data.message, 'error');
+      }
+    } catch {
+      showAlert('registerAlert', 'Server error. Make sure the server is running.', 'error');
+    }
+  }
+
+  async function login() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    if (!email || !password) return showAlert('loginAlert', 'Please enter email and password.', 'error');
+
+    try {
+      const data = await apiFetch('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+      if (data.success) {
+        token = data.token;
+        currentUser = data.user;
+        localStorage.setItem('ec_token', token);
+        updateNav();
+        showToast(`Welcome back, ${currentUser.name}! 👋`);
+        showView('dashboard');
+      } else {
+        showAlert('loginAlert', data.message, 'error');
+      }
+    } catch {
+      showAlert('loginAlert', 'Server error. Make sure the server is running.', 'error');
+    }
+  }
+
+  function logout() {
+    token = null;
+    currentUser = null;
+    localStorage.removeItem('ec_token');
+    localStorage.removeItem('ec_user');
+    updateNav();
+    showView('home');
+    showToast('You have been logged out.');
+  }
+
+  // ── DASHBOARD ────────────────────────────
+  async function loadDashboard() {
+    if (!currentUser) { showView('login'); return; }
+    document.getElementById('dashGreeting').textContent = `Welcome back, ${currentUser.name}! 👋`;
+    document.getElementById('dashSubtitle').textContent =
+      currentUser.role === 'pupil' ? `Grade ${currentUser.grade} • Let's keep learning.` :
+      currentUser.role === 'tutor' ? `Tutor • ${currentUser.helpedCount || 0} pupils helped` :
+      'Administrator Dashboard';
+
+    try {
+      const data = await apiFetch('/api/users/dashboard');
+      if (!data.success) return;
+      const s = data.data;
+
+      let statsHTML = '';
+      if (currentUser.role === 'pupil') {
+        statsHTML = `
+          <div class="dash-stat"><div class="dash-stat-num">${s.totalRequests}</div><div class="dash-stat-label">Requests Posted</div></div>
+          <div class="dash-stat"><div class="dash-stat-num">${s.openRequests}</div><div class="dash-stat-label">Open Requests</div></div>
+          <div class="dash-stat"><div class="dash-stat-num">${s.resolvedRequests}</div><div class="dash-stat-label">Resolved</div></div>
+        `;
+      } else if (currentUser.role === 'tutor') {
+        statsHTML = `
+          <div class="dash-stat"><div class="dash-stat-num">${s.helpedCount}</div><div class="dash-stat-label">Pupils Helped</div></div>
+          <div class="dash-stat"><div class="dash-stat-num">${s.rating || '—'}</div><div class="dash-stat-label">Your Rating</div></div>
+          <div class="dash-stat"><div class="dash-stat-num">${s.openRequestsInMySubjects}</div><div class="dash-stat-label">Open Requests (Your Subjects)</div></div>
+        `;
+      } else {
+        statsHTML = `
+          <div class="dash-stat"><div class="dash-stat-num">${s.totalUsers}</div><div class="dash-stat-label">Total Users</div></div>
+          <div class="dash-stat"><div class="dash-stat-num">${s.totalRequests}</div><div class="dash-stat-label">Total Requests</div></div>
+          <div class="dash-stat"><div class="dash-stat-num">${s.totalResolved}</div><div class="dash-stat-label">Resolved</div></div>
+        `;
+      }
+      document.getElementById('dashStats').innerHTML = statsHTML;
+
+      const recent = s.recentRequests || [];
+      document.getElementById('dashRecent').innerHTML = recent.length
+        ? recent.map(r => `
+          <div class="request-card" onclick="viewRequest('${r._id}')">
+            <div class="request-meta">
+              <span class="badge badge-blue">${r.subject}</span>
+              <span class="badge badge-gray">${r.grade}</span>
+              <span class="badge ${statusBadge(r.status)}">${r.status}</span>
+            </div>
+            <div class="request-title">${r.title}</div>
+            <div class="request-by">Posted by ${r.postedBy?.name || 'Unknown'}</div>
+          </div>`).join('')
+        : '<div class="card" style="text-align:center;color:var(--muted)">No recent activity yet.</div>';
+    } catch {
+      document.getElementById('dashRecent').innerHTML = '<p style="color:var(--muted)">Could not load dashboard data.</p>';
+    }
+  }
+
+  // ── REQUESTS ─────────────────────────────
+  async function loadRequests() {
+    const subject = document.getElementById('filterSubject').value;
+    const grade = document.getElementById('filterGrade').value;
+    let url = '/api/requests?';
+    if (subject) url += `subject=${encodeURIComponent(subject)}&`;
+    if (grade) url += `grade=${encodeURIComponent(grade)}`;
+
+    document.getElementById('requestsList').innerHTML = '<div class="spinner"></div>';
+    try {
+      const data = await apiFetch(url);
+      if (!data.success) throw new Error();
+      const reqs = data.data;
+      document.getElementById('requestsList').innerHTML = reqs.length
+        ? reqs.map(r => `
+          <div class="request-card">
+            <div class="request-meta">
+              <span class="badge badge-blue">${r.subject}</span>
+              <span class="badge badge-gray">${r.grade}</span>
+              <span class="badge ${statusBadge(r.status)}">${r.status}</span>
+              <span style="color:var(--muted);font-size:0.8rem;margin-left:auto">${timeAgo(r.createdAt)}</span>
+            </div>
+            <div class="request-title">${r.title}</div>
+            <div class="request-desc">${r.description.substring(0, 140)}${r.description.length > 140 ? '...' : ''}</div>
+            <div class="request-footer">
+              <span class="request-by">By ${r.postedBy?.name || 'Unknown'} • ${r.responses?.length || 0} response(s)</span>
+              <button class="btn btn-outline btn-sm" onclick="viewRequest('${r._id}')">View & Respond</button>
+            </div>
+          </div>`).join('')
+        : '<div class="card" style="text-align:center;color:var(--muted);padding:40px;">No requests found for these filters.</div>';
+    } catch {
+      document.getElementById('requestsList').innerHTML = '<div class="alert alert-error">Could not load requests. Is the server running?</div>';
+    }
+  }
+
+  async function viewRequest(id) {
+    const modal = document.getElementById('viewRequestModal');
+    document.getElementById('viewRequestContent').innerHTML = '<div class="spinner"></div>';
+    modal.classList.remove('hidden');
+
+    const data = await apiFetch(`/api/requests/${id}`);
+    if (!data.success) return;
+    const r = data.data;
+
+    const canRespond = currentUser && currentUser.role === 'tutor';
+    const isOwner = currentUser && r.postedBy._id === currentUser._id;
+
+    document.getElementById('viewRequestContent').innerHTML = `
+      <div class="request-meta" style="margin-bottom:12px;">
+        <span class="badge badge-blue">${r.subject}</span>
+        <span class="badge badge-gray">${r.grade}</span>
+        <span class="badge ${statusBadge(r.status)}">${r.status}</span>
+      </div>
+      <h3 style="margin-bottom:10px;">${r.title}</h3>
+      <p style="color:var(--slate);line-height:1.7;margin-bottom:20px;">${r.description}</p>
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:20px;">Posted by ${r.postedBy.name} (${r.postedBy.grade}) • ${timeAgo(r.createdAt)}</p>
+
+      <h4 style="margin-bottom:12px;">💬 Responses (${r.responses.length})</h4>
+      ${r.responses.length ? r.responses.map(resp => `
+        <div class="response-block">
+          <div class="tutor-name-sm">👨‍🏫 ${resp.tutor?.name || 'Tutor'} ${resp.rating ? `⭐ ${resp.rating}/5` : ''}</div>
+          <p>${resp.message}</p>
+          ${isOwner && r.status !== 'resolved' && !resp.rating ? `
+            <div class="star-rating" id="stars-${resp._id}">
+              <span style="font-size:0.82rem;color:var(--muted);margin-right:6px;">Rate this help:</span>
+              ${[1,2,3,4,5].map(n => `<span class="star" onclick="rateResponse('${r._id}','${resp._id}',${n})" onmouseover="hoverStars('stars-${resp._id}',${n})" onmouseout="resetStars('stars-${resp._id}')"">★</span>`).join('')}
+            </div>` : ''}
+        </div>`).join('') : '<p style="color:var(--muted);font-size:0.9rem;">No responses yet.</p>'}
+
+      ${canRespond && r.status !== 'resolved' ? `
+        <div style="margin-top:20px;">
+          <div class="form-group">
+            <label>Your Response</label>
+            <textarea id="respondMsg" placeholder="Write a helpful, clear explanation..." style="min-height:120px;"></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="submitResponse('${r._id}')">Submit Response</button>
+        </div>` : ''}
+      ${isOwner && r.status !== 'resolved' ? `
+        <button class="btn btn-danger btn-sm" style="margin-top:16px;" onclick="deleteRequest('${r._id}')">Delete Request</button>` : ''}
+    `;
+  }
+
+  async function submitResponse(requestId) {
+    const message = document.getElementById('respondMsg').value.trim();
+    if (!message) return showToast('Please write a response.', 'error');
+    const data = await apiFetch(`/api/requests/${requestId}/respond`, {
+      method: 'POST', body: JSON.stringify({ message })
+    });
+    if (data.success) { closeModal('viewRequestModal'); showToast('Response submitted!'); loadRequests(); }
+    else showToast(data.message, 'error');
+  }
+
+  async function rateResponse(requestId, responseId, rating) {
+    const data = await apiFetch(`/api/requests/${requestId}/rate/${responseId}`, {
+      method: 'POST', body: JSON.stringify({ rating })
+    });
+    if (data.success) { closeModal('viewRequestModal'); showToast('Rating submitted! Request resolved. ✅'); loadRequests(); }
+    else showToast(data.message, 'error');
+  }
+
+  function hoverStars(containerId, n) {
+    const stars = document.querySelectorAll(`#${containerId} .star`);
+    stars.forEach((s, i) => s.classList.toggle('active', i < n));
+  }
+  function resetStars(containerId) {
+    document.querySelectorAll(`#${containerId} .star`).forEach(s => s.classList.remove('active'));
+  }
+
+  async function deleteRequest(id) {
+    if (!confirm('Delete this request?')) return;
+    const data = await apiFetch(`/api/requests/${id}`, { method: 'DELETE' });
+    if (data.success) { closeModal('viewRequestModal'); showToast('Request deleted.'); loadRequests(); }
+    else showToast(data.message, 'error');
+  }
+
+  function showPostRequestModal() {
+    if (!currentUser) { showView('login'); return; }
+    document.getElementById('postRequestModal').classList.remove('hidden');
+  }
+
+  async function submitRequest() {
+    const title = document.getElementById('req-title').value.trim();
+    const subject = document.getElementById('req-subject').value;
+    const grade = document.getElementById('req-grade').value;
+    const description = document.getElementById('req-desc').value.trim();
+
+    if (!title || !subject || !description) return showAlert('postRequestAlert', 'All fields are required.', 'error');
+
+    const data = await apiFetch('/api/requests', {
+      method: 'POST', body: JSON.stringify({ title, subject, grade, description })
+    });
+    if (data.success) {
+      closeModal('postRequestModal');
+      showToast('Request posted! A tutor will respond soon. 📬');
+      loadRequests();
+    } else showAlert('postRequestAlert', data.message, 'error');
+  }
+
+  // ── RESOURCES ────────────────────────────
+  async function loadResources() {
+    const subject = document.getElementById('filterResSubject').value;
+    const grade = document.getElementById('filterResGrade').value;
+    let url = '/api/resources?';
+    if (subject) url += `subject=${encodeURIComponent(subject)}&`;
+    if (grade) url += `grade=${encodeURIComponent(grade)}`;
+
+    document.getElementById('resourcesGrid').innerHTML = '<div class="spinner"></div>';
+    try {
+      const data = await apiFetch(url);
+      allResources = data.data || [];
+      renderResources(allResources);
+    } catch {
+      document.getElementById('resourcesGrid').innerHTML = '<div class="alert alert-error">Could not load resources.</div>';
+    }
+  }
+
+  function renderResources(list) {
+    const icons = { 'Notes': '📝', 'Past Paper': '📄', 'Study Guide': '📖', 'Exercise': '✏️', 'Other': '📁' };
+    document.getElementById('resourcesGrid').innerHTML = list.length
+      ? list.map(r => `
+        <div class="resource-card">
+          <div class="resource-icon">${icons[r.type] || '📁'}</div>
+          <div class="badge badge-blue" style="margin-bottom:8px;">${r.subject}</div>
+          <div class="resource-title">${r.title}</div>
+          <div class="resource-desc">${r.description || 'No description provided.'}</div>
+          <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
+            <span class="badge badge-gray">${r.grade}</span>
+            <span class="badge badge-amber">${r.type}</span>
+          </div>
+          <div class="resource-footer">
+            <span class="resource-downloads">⬇️ ${r.downloads} downloads</span>
+            ${r.fileUrl
+              ? `<a href="${r.fileUrl}" target="_blank" class="btn btn-primary btn-sm" onclick="countDownload('${r._id}')">Download</a>`
+              : `<span style="color:var(--muted);font-size:0.82rem;">No file attached</span>`}
+          </div>
+        </div>`).join('')
+      : '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px;">No resources found.</div>';
+  }
+
+  function filterResources() {
+    const q = document.getElementById('searchResource').value.toLowerCase();
+    renderResources(allResources.filter(r =>
+      r.title.toLowerCase().includes(q) ||
+      r.subject.toLowerCase().includes(q) ||
+      (r.description || '').toLowerCase().includes(q)
+    ));
+  }
+
+  function countDownload(id) {
+    fetch(`${API}/api/resources/${id}/download`, { method: 'POST' });
+  }
+
+  function showUploadModal() {
+    if (!currentUser) { showView('login'); return; }
+    document.getElementById('uploadResourceModal').classList.remove('hidden');
+  }
+
+  async function submitResource() {
+    const title = document.getElementById('res-title').value.trim();
+    const subject = document.getElementById('res-subject').value;
+    const grade = document.getElementById('res-grade').value;
+    const type = document.getElementById('res-type').value;
+    const description = document.getElementById('res-desc').value.trim();
+    const fileInput = document.getElementById('res-file');
+
+    if (!title || !subject) return showAlert('uploadAlert', 'Title and subject are required.', 'error');
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('subject', subject);
+    formData.append('grade', grade);
+    formData.append('type', type);
+    formData.append('description', description);
+    if (fileInput.files[0]) formData.append('file', fileInput.files[0]);
+
+    const data = await apiFormData('/api/resources', formData);
+    if (data.success) {
+      closeModal('uploadResourceModal');
+      showToast('Resource uploaded! Thank you for contributing. 🙏');
+      loadResources();
+    } else showAlert('uploadAlert', data.message, 'error');
+  }
+
+  // ── TUTORS ────────────────────────────────
+  async function loadTutors() {
+    const subject = document.getElementById('filterTutorSubject').value;
+    let url = '/api/users/tutors';
+    if (subject) url += `?subject=${encodeURIComponent(subject)}`;
+
+    document.getElementById('tutorsGrid').innerHTML = '<div class="spinner"></div>';
+    try {
+      const data = await apiFetch(url);
+      const tutors = data.data || [];
+      document.getElementById('tutorsGrid').innerHTML = tutors.length
+        ? tutors.map(t => `
+          <div class="tutor-card">
+            <div class="tutor-avatar">${t.name.charAt(0)}</div>
+            <div class="tutor-name">${t.name}</div>
+            <div class="tutor-rating">${'★'.repeat(Math.round(t.rating || 0))}${'☆'.repeat(5 - Math.round(t.rating || 0))} ${t.rating ? t.rating.toFixed(1) : 'New'}</div>
+            <div class="tutor-subjects">${(t.subjects || []).map(s => `<span class="badge badge-green">${s}</span>`).join('')}</div>
+            <div class="tutor-bio">${t.bio || 'Ready to help!'}</div>
+            <div class="tutor-stats">
+              <span>👥 ${t.helpedCount} helped</span>
+              <span>⭐ ${t.totalRatings} ratings</span>
+            </div>
+          </div>`).join('')
+        : '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px;">No tutors found for this subject.</div>';
+    } catch {
+      document.getElementById('tutorsGrid').innerHTML = '<div class="alert alert-error">Could not load tutors.</div>';
+    }
+  }
+
+  // ── AI ASSISTANT ──────────────────────────
+  async function sendAIQuestion() {
+    const input = document.getElementById('chatInput');
+    const question = input.value.trim();
+    if (!question) return;
+
+    appendChat(question, 'user');
+    input.value = '';
+
+    const typing = document.createElement('div');
+    typing.className = 'chat-bubble ai';
+    typing.id = 'typing';
+    typing.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+    document.getElementById('chatMessages').appendChild(typing);
+    scrollChat();
+
+    try {
+      const data = await apiFetch('/api/ai/ask', {
+        method: 'POST', body: JSON.stringify({ question })
+      });
+      document.getElementById('typing')?.remove();
+
+      if (data.success) {
+        const { answer, subject, relatedResources } = data.data;
+        let html = `<div class="subject-tag">📚 ${subject}</div>${answer.replace(/\n/g, '<br/>')}`;
+        if (relatedResources && relatedResources.length) {
+          html += `<div style="margin-top:10px;padding-top:10px;border-top:1px solid #b2f0cb;font-size:0.8rem;"><strong>Related resources:</strong> ${relatedResources.map(r => `<span style="display:inline-block;margin-top:4px;">${r.title} (${r.grade})</span>`).join(', ')}</div>`;
+        }
+        appendChat(html, 'ai', true);
+      } else {
+        appendChat('Sorry, I had trouble answering that. Try rephrasing your question!', 'ai');
+      }
+    } catch {
+      document.getElementById('typing')?.remove();
+      appendChat('Could not connect to the server. Make sure EduConnect is running.', 'ai');
+    }
+  }
+
+  function askSuggestion(q) {
+    document.getElementById('chatInput').value = q;
+    sendAIQuestion();
+  }
+
+  function appendChat(content, type, isHTML = false) {
+    const msgs = document.getElementById('chatMessages');
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble ${type}`;
+    if (isHTML) bubble.innerHTML = content;
+    else bubble.textContent = content;
+    msgs.appendChild(bubble);
+    scrollChat();
+  }
+
+  function scrollChat() {
+    const msgs = document.getElementById('chatMessages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  // ── HELPERS ──────────────────────────────
+  function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+  function showAlert(containerId, message, type) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = `<div class="alert alert-${type === 'error' ? 'error' : 'success'}">${message}</div>`;
+  }
+
+  function showToast(message, type = 'success') {
+    const el = document.getElementById('globalAlert');
+    el.innerHTML = `<div class="alert alert-${type === 'error' ? 'error' : 'success'}" style="box-shadow:var(--shadow-lg);">${message}</div>`;
+    el.classList.remove('hidden');
+    setTimeout(() => el.classList.add('hidden'), 3500);
+  }
+
+  function statusBadge(status) {
+    return status === 'open' ? 'badge-green' : status === 'in-progress' ? 'badge-amber' : 'badge-gray';
+  }
+
+  function timeAgo(dateStr) {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return `${Math.floor(hrs / 24)}d ago`;
+  }
+</script>
+</body>
+</html>
